@@ -11,7 +11,6 @@ function App() {
           <li><Link to="/jobs" className="hover:underline">Jobs</Link></li>
         </ul>
       </nav>
-
       <div className="h-screen w-full">
         <Routes>
           <Route path="/" element={<Home />} />
