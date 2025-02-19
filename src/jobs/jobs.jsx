@@ -32,7 +32,6 @@ const JobList = () => {
   }, []);
 
   const handleJobClick = (job) => {
-    // Format the job data before setting it as selected
     const formattedJob = {
       ...job,
       description: typeof job.description === 'object' ? 
