@@ -1,3 +1,4 @@
+import { MapPin, DollarSign, Heart } from "lucide-react";
 import React, { useState } from "react";
 import useJobs from "../data/FetchJobs";
 import "../style/jobs-style.css";
@@ -11,6 +12,12 @@ const JobList = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [location, setLocation] = useState("");
+  const [filters, setFilters] = useState({
+    jobType: [],
+    minSalary: "",
+    experience: "",
+    workType: [],
+  });
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -18,19 +25,33 @@ const JobList = () => {
     setSelectedJob(job);
   };
 
-  // Fungsi untuk menangani pencarian dari JobSearch
   const handleSearch = (term, loc) => {
     setSearchTerm(term);
     setLocation(loc);
   };
 
-  // Filter pekerjaan berdasarkan searchTerm (job title) & location
+  const handleFilterChange = (newFilters) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      ...newFilters,
+    }));
+  };
+
   const filteredJobs = jobs
-    ? jobs.filter(
-        (job) =>
-          job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-          job.location.toLowerCase().includes(location.toLowerCase())
-      )
+    ? jobs.filter((job) => {
+        const matchesTitle = job.title.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesLocation = job.location.toLowerCase().includes(location.toLowerCase());
+        const matchesSalary =
+          filters.minSalary === "" || (job.salary && job.salary >= Number(filters.minSalary));
+        const matchesExperience =
+          filters.experience === "" || job.experience.toLowerCase().includes(filters.experience.toLowerCase());
+        const matchesJobType =
+          filters.jobType.length === 0 || filters.jobType.includes(job.type);
+        const matchesWorkType =
+          filters.workType.length === 0 || filters.workType.includes(job.workType);
+
+        return matchesTitle && matchesLocation && matchesSalary && matchesExperience && matchesJobType && matchesWorkType;
+      })
     : [];
 
   return (
@@ -41,7 +62,7 @@ const JobList = () => {
       {/* Sidebar & Main Content */}
       <div className="flex w-full">
         {/* Sidebar */}
-        <SidebarFilter isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <SidebarFilter isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} onFilterChange={handleFilterChange} />
 
         {/* Main Content */}
         <div className="jobs-content w-full md:w-2/4 p-4">
@@ -55,21 +76,47 @@ const JobList = () => {
                 <div
                   key={job.id}
                   onClick={() => handleJobClick(job)}
-                  className={`bg-white p-4 shadow-md rounded-lg cursor-pointer ${
-                    selectedJob?.id === job.id ? "bg-blue-50" : ""
-                  }`}
+                  className={`bg-white p-4 shadow-md rounded-lg cursor-pointer border ${
+                    selectedJob?.id === job.id ? "border-blue-500" : "border-gray-200"
+                  } transition-all hover:shadow-lg`}
                 >
-                  <h3 className="text-xl font-semibold">{job.title}</h3>
-                  <p className="text-gray-600">{job.company}</p>
-                  <div className="flex justify-between items-center mt-2">
-                    <p className="text-sm text-gray-500">{job.location}</p>
-                    <p className="text-sm font-bold text-blue-600">
-                      Rp. {typeof job.salary === "number" ? job.salary.toLocaleString() : job.salary}
-                    </p>
+                  {/* Header */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={job.avatar}
+                        alt={job.company}
+                        className="w-10 h-10 rounded-md"
+                      />
+                      <div>
+                        <h3 className="text-lg font-semibold">{job.title}</h3>
+                        <p className="text-blue-600 text-sm font-medium">{job.company}</p>
+                      </div>
+                    </div>
+                    <Heart className="text-red-500 cursor-pointer" size={20} />
                   </div>
-                  <span className="text-sm text-gray-500 block mt-2">
-                    Posted {new Date(job.postedAt).toLocaleString()}
-                  </span>
+
+                  {/* Lokasi & Gaji */}
+                  <div className="mt-3 space-y-2">
+                    <div className="flex items-center text-gray-600 text-sm gap-2">
+                      <MapPin size={16} />
+                      <span>{job.location}</span>
+                    </div>
+                    <div className="flex items-center text-gray-900 font-medium text-sm gap-2">
+                      <DollarSign size={16} />
+                      <span>{typeof job.salary === "number" ? job.salary.toLocaleString() : job.salary}</span>
+                    </div>
+                  </div>
+
+                  {/* Waktu Posting & Tombol Detail */}
+                  <div className="mt-3 flex items-center justify-between text-gray-500 text-xs">
+                    <span className="flex items-center gap-1">
+                      <span className="text-gray-400">•</span> Posted {new Date(job.postedAt).toLocaleString()}
+                    </span>
+                    <button className="text-blue-600 border border-blue-500 px-3 py-1 rounded-full text-xs hover:bg-blue-500 hover:text-white transition">
+                      Details
+                    </button>
+                  </div>
                 </div>
               ))
             ) : (
