@@ -28,7 +28,7 @@ const HomeHero = () => {
     // </div>
 
 
-    <div className="w-full max-w-[1300px] mx-auto mt-4 px-6 md:px-12">
+    <div className="w-full max-w-[1300px] mx-auto mt-4 px-6 md:px-12 md:my-16">
   {/* Gambar utama */}
   <div className="relative w-full flex flex-col md:flex-row items-center">
     {/* Teks di kiri */}

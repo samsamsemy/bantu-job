@@ -10,18 +10,18 @@ const ChatPreview = () => {
         Good Morning
       </div>
 
-      <span className="text-sm text-gray-500 mt-6">08:34 AM</span>
+      <span className="text-sm text-gray-500 mt-6 self">08:34 AM</span>
       <div className="bg-gray-200 text-black p-3 rounded-lg w-fit max-w-[70%] mt-2">
         Hi Ricky, I am Anjal. I'm a UI/UX Designer at Exakt Studio. I have a feeling we may have some very interesting work that you may be interested in full-time opportunities?
       </div>
 
-      <span className="text-sm text-gray-500 mt-6">11:12 AM</span>
+      <span className="text-sm text-gray-500 mt-6 self-end">11:12 AM</span>
       <div className="bg-blue-500 text-white p-3 rounded-lg w-fit max-w-[70%] self-end mt-2">
         Hi Markus, Thank you for offering me the position. I appreciate your willingness to discuss the details of the position with me and give me time to consider your offer.
       </div>
 
-      <span className="text-sm text-gray-500 mt-6 self-end">11:39 AM</span>
-      <div className="bg-gray-200 text-black p-3 rounded-lg w-fit max-w-[70%] self-end mt-2">
+      <span className="text-sm text-gray-500 mt-6">11:39 AM</span>
+      <div className="bg-gray-200 text-black p-3 rounded-lg w-fit max-w-[70%]  mt-2">
         You're welcome, Samuel. So what's your answer for my offer?
       </div>
     </div>
