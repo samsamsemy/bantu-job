@@ -1,10 +1,10 @@
 import React from "react";
 
 const JobDetails = ({ job }) => {
-  if (!job) return null; // Jika data job tidak ada, jangan tampilkan apa pun
+  if (!job) return null;
 
   return (
-    <div className="jobs-details w-100% bg-white p-6 shadow-md rounded-lg ml-4">
+    <div className="jobs-details w-100% bg-white p-6 shadow-md rounded-lg">
       {/* Header dengan Logo Perusahaan */}
       <div className="text-center">
         <img
@@ -18,18 +18,37 @@ const JobDetails = ({ job }) => {
 
       {/* Informasi Utama */}
       <div className="border-b pb-4 mt-4 grid grid-cols-2 gap-4 text-sm text-gray-700">
-        <p><span className="font-semibold">Job Type:</span> {job.jobType || "N/A"}</p>
-        <p><span className="font-semibold">Work Type:</span> {job.workType || "N/A"}</p>
-        <p><span className="font-semibold">Location:</span> {job.location || "N/A"}</p>
-        <p><span className="font-semibold">Salary:</span> {job.salary || "N/A"}</p>
-        <p><span className="font-semibold">Category:</span> {job.category || "N/A"}</p>
-        <p><span className="font-semibold">Posted At:</span> {job.posted_at || "N/A"}</p>
+        <p>
+          <span className="font-semibold">Job Type:</span>{" "}
+          {job.jobType || "N/A"}
+        </p>
+        <p>
+          <span className="font-semibold">Work Type:</span>{" "}
+          {job.workType || "N/A"}
+        </p>
+        <p>
+          <span className="font-semibold">Location:</span>{" "}
+          {job.location || "N/A"}
+        </p>
+        <p>
+          <span className="font-semibold">Salary:</span> {job.salary || "N/A"}
+        </p>
+        <p>
+          <span className="font-semibold">Category:</span>{" "}
+          {job.category || "N/A"}
+        </p>
+        <p>
+          <span className="font-semibold">Posted At:</span>{" "}
+          {job.posted_at || "N/A"}
+        </p>
       </div>
 
       {/* Deskripsi Pekerjaan */}
       <div className="mt-6">
         <h3 className="text-lg font-semibold text-gray-800">Description</h3>
-        <p className="mt-2 text-gray-600 leading-relaxed">{job.description?.summary || "No description available"}</p>
+        <p className="mt-2 text-gray-600 leading-relaxed">
+          {job.description?.summary || "No description available"}
+        </p>
         <ul className="list-disc list-inside mt-2 text-gray-600">
           {job.description?.points?.map((point, index) => (
             <li key={index}>{point}</li>

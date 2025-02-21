@@ -39,18 +39,34 @@ const JobList = () => {
 
   const filteredJobs = jobs
     ? jobs.filter((job) => {
-        const matchesTitle = job.title.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesLocation = job.location.toLowerCase().includes(location.toLowerCase());
+        const matchesTitle = job.title
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+        const matchesLocation = job.location
+          .toLowerCase()
+          .includes(location.toLowerCase());
         const matchesSalary =
-          filters.minSalary === "" || (job.salary && job.salary >= Number(filters.minSalary));
+          filters.minSalary === "" ||
+          (job.salary && job.salary >= Number(filters.minSalary));
         const matchesExperience =
-          filters.experience === "" || job.experience.toLowerCase().includes(filters.experience.toLowerCase());
+          filters.experience === "" ||
+          job.experience
+            .toLowerCase()
+            .includes(filters.experience.toLowerCase());
         const matchesJobType =
           filters.jobType.length === 0 || filters.jobType.includes(job.type);
         const matchesWorkType =
-          filters.workType.length === 0 || filters.workType.includes(job.workType);
+          filters.workType.length === 0 ||
+          filters.workType.includes(job.workType);
 
-        return matchesTitle && matchesLocation && matchesSalary && matchesExperience && matchesJobType && matchesWorkType;
+        return (
+          matchesTitle &&
+          matchesLocation &&
+          matchesSalary &&
+          matchesExperience &&
+          matchesJobType &&
+          matchesWorkType
+        );
       })
     : [];
 
@@ -62,13 +78,19 @@ const JobList = () => {
       {/* Sidebar & Main Content */}
       <div className="flex w-full">
         {/* Sidebar */}
-        <SidebarFilter isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} onFilterChange={handleFilterChange} />
+        <SidebarFilter
+          isOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          onFilterChange={handleFilterChange}
+        />
 
         {/* Main Content */}
         <div className="jobs-content w-full md:w-2/4 p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Search Result</h2>
-            <span className="text-gray-500">{filteredJobs.length} Jobs Found</span>
+            <span className="text-gray-500">
+              {filteredJobs.length} Jobs Found
+            </span>
           </div>
           <div className="space-y-4">
             {filteredJobs.length > 0 ? (
@@ -77,7 +99,9 @@ const JobList = () => {
                   key={job.id}
                   onClick={() => handleJobClick(job)}
                   className={`bg-white p-4 shadow-md rounded-lg cursor-pointer border ${
-                    selectedJob?.id === job.id ? "border-blue-500" : "border-gray-200"
+                    selectedJob?.id === job.id
+                      ? "border-blue-500"
+                      : "border-gray-200"
                   } transition-all hover:shadow-lg`}
                 >
                   {/* Header */}
@@ -90,7 +114,9 @@ const JobList = () => {
                       />
                       <div>
                         <h3 className="text-lg font-semibold">{job.title}</h3>
-                        <p className="text-blue-600 text-sm font-medium">{job.company}</p>
+                        <p className="text-blue-600 text-sm font-medium">
+                          {job.company}
+                        </p>
                       </div>
                     </div>
                     <Heart className="text-red-500 cursor-pointer" size={20} />
@@ -104,14 +130,19 @@ const JobList = () => {
                     </div>
                     <div className="flex items-center text-gray-900 font-medium text-sm gap-2">
                       <DollarSign size={16} />
-                      <span>{typeof job.salary === "number" ? job.salary.toLocaleString() : job.salary}</span>
+                      <span>
+                        {typeof job.salary === "number"
+                          ? job.salary.toLocaleString()
+                          : job.salary}
+                      </span>
                     </div>
                   </div>
 
                   {/* Waktu Posting & Tombol Detail */}
                   <div className="mt-3 flex items-center justify-between text-gray-500 text-xs">
                     <span className="flex items-center gap-1">
-                      <span className="text-gray-400">•</span> Posted {new Date(job.postedAt).toLocaleString()}
+                      <span className="text-gray-400">•</span> Posted{" "}
+                      {new Date(job.postedAt).toLocaleString()}
                     </span>
                     <button className="text-blue-600 border border-blue-500 px-3 py-1 rounded-full text-xs hover:bg-blue-500 hover:text-white transition">
                       Details
@@ -127,7 +158,7 @@ const JobList = () => {
 
         {/* Job Details muncul di sebelah kanan jika ada job yang dipilih */}
         {selectedJob && (
-          <div className="hidden md:block w-2/4 p-4">
+          <div className="hidden md:block w-2/4">
             <JobDetails job={selectedJob} />
           </div>
         )}
