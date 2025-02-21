@@ -1,17 +1,16 @@
-import React from "react";
-import Hero from "../components/Hero";
-import JobStats from "../components/JobStats";
-import ChatPreview from "../components/ChatPreview";
-import Testimonials from "../components/Testimonials";
+import HomeHero from "../components/home-hero";
+import HomeJobStats from "../components/home-JobStats";
+import HomeChatPreview from "../components/home-ChatPreview";
+import HomeTestimonials from "../components/home-Testimonials";
 import Footer from "../components/Footer";
 
 const Home = () => {
   return (
     <div>
-      <Hero />
-      <JobStats />
-      <ChatPreview />
-      <Testimonials />
+      <HomeHero />
+      <HomeJobStats />
+      <HomeChatPreview />
+      <HomeTestimonials />
       <Footer />
     </div>
   );

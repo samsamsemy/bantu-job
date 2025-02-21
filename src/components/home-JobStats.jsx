@@ -1,6 +1,6 @@
 import React from "react";
 
-const JobStats = () => {
+const HomeJobStats = () => {
   return (
     <div className="home-jobstats bg-gray-100 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -33,4 +33,4 @@ const JobStats = () => {
   );
 };
 
-export default JobStats;
+export default HomeJobStats;
