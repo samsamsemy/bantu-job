@@ -25,7 +25,10 @@ const JobSearch = ({ onSearch }) => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             {searchTerm && (
-              <button onClick={() => setSearchTerm("")} className="ml-2 text-gray-500">
+              <button
+                onClick={() => setSearchTerm("")}
+                className="ml-2 text-gray-500"
+              >
                 ✖
               </button>
             )}
@@ -40,7 +43,10 @@ const JobSearch = ({ onSearch }) => {
               onChange={(e) => setLocation(e.target.value)}
             />
             {location && (
-              <button onClick={() => setLocation("")} className="ml-2 text-gray-500">
+              <button
+                onClick={() => setLocation("")}
+                className="ml-2 text-gray-500"
+              >
                 ✖
               </button>
             )}
