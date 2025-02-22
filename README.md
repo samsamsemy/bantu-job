@@ -1,3 +1,8 @@
+Figma : 
+<br>
+https://www.figma.com/design/L2FfeA15UgjLH7wSJMyKBn/Bantu?node-id=22-2&t=QimZUn2BR9tJF17W-0
+
+
 Output Ui search : 
 
 Saat Search ada : 
