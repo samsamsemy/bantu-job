@@ -10,8 +10,8 @@ import JobDetails from "../components/JobDetails";
 ReactModal.setAppElement("#root");
 
 const extractSalaryNumber = (salary) => {
-  if (typeof salary === 'number') return salary;
-  return Number(salary.replace(/[Rp.,\s]/g, ''));
+  if (typeof salary === "number") return salary;
+  return Number(salary.replace(/[Rp.,\s]/g, ""));
 };
 
 const JobList = () => {
@@ -32,7 +32,7 @@ const JobList = () => {
 
   useEffect(() => {
     if (jobs?.length > 0) {
-      console.log('Sample job data:', jobs[0]);
+      console.log("Sample job data:", jobs[0]);
     }
   }, [jobs]);
 
@@ -51,15 +51,15 @@ const JobList = () => {
   };
 
   const handleFilterChange = (newFilters) => {
-    console.log('New filters applied:', newFilters);
+    console.log("New filters applied:", newFilters);
     setFilters(newFilters);
   };
 
   const handleFavoriteClick = (e, jobId) => {
     e.stopPropagation();
-    setFavorites(prev => {
+    setFavorites((prev) => {
       if (prev.includes(jobId)) {
-        return prev.filter(id => id !== jobId);
+        return prev.filter((id) => id !== jobId);
       }
       return [...prev, jobId];
     });
@@ -67,19 +67,27 @@ const JobList = () => {
 
   const filteredJobs = jobs
     ? jobs.filter((job) => {
-        const matchesTitle = job.title.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesLocation = job.location.toLowerCase().includes(location.toLowerCase());
+        const matchesTitle = job.title
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+        const matchesLocation = job.location
+          .toLowerCase()
+          .includes(location.toLowerCase());
         const jobSalary = extractSalaryNumber(job.salary) || 0;
         const minSalary = extractSalaryNumber(filters.minSalary) || 0;
         const matchesSalary = minSalary === 0 || jobSalary >= minSalary;
         const matchesExperience =
           !filters.experience ||
-          job.experience?.toLowerCase().includes(filters.experience.toLowerCase());
-        const jobTypeValue = job.jobType || job.job_type || job.type || job.employment_type;
+          job.experience
+            ?.toLowerCase()
+            .includes(filters.experience.toLowerCase());
+        const jobTypeValue =
+          job.jobType || job.job_type || job.type || job.employment_type;
         const matchesJobType =
-          filters.jobType.length === 0 || 
+          filters.jobType.length === 0 ||
           (jobTypeValue && filters.jobType.includes(jobTypeValue));
-        const workTypeValue = job.workType || job.work_type || job.location_type;
+        const workTypeValue =
+          job.workType || job.work_type || job.location_type;
         const matchesWorkType =
           filters.workType.length === 0 ||
           (workTypeValue && filters.workType.includes(workTypeValue));
@@ -96,7 +104,11 @@ const JobList = () => {
     : [];
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
   }
 
   return (
@@ -122,7 +134,9 @@ const JobList = () => {
         <div className="jobs-content w-full md:w-2/4 p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Search Results</h2>
-            <span className="text-gray-500">{filteredJobs.length} Jobs Found</span>
+            <span className="text-gray-500">
+              {filteredJobs.length} Jobs Found
+            </span>
           </div>
 
           <div className="space-y-4">
@@ -132,7 +146,9 @@ const JobList = () => {
                   key={job.id}
                   onClick={() => handleJobClick(job)}
                   className={`bg-white p-4 shadow-md rounded-lg cursor-pointer border ${
-                    selectedJob?.id === job.id ? "border-blue-500" : "border-gray-200"
+                    selectedJob?.id === job.id
+                      ? "border-blue-500"
+                      : "border-gray-200"
                   } transition-all hover:shadow-lg`}
                 >
                   <div className="flex items-center justify-between">
@@ -144,12 +160,18 @@ const JobList = () => {
                       />
                       <div>
                         <h3 className="text-lg font-semibold">{job.title}</h3>
-                        <p className="text-blue-600 text-sm font-medium">{job.company}</p>
+                        <p className="text-blue-600 text-sm font-medium">
+                          {job.company}
+                        </p>
                       </div>
                     </div>
-                    <Heart 
-                      className={`cursor-pointer ${favorites.includes(job.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} 
-                      size={20} 
+                    <Heart
+                      className={`cursor-pointer ${
+                        favorites.includes(job.id)
+                          ? "fill-red-500 text-red-500"
+                          : "text-gray-400"
+                      }`}
+                      size={20}
                       onClick={(e) => handleFavoriteClick(e, job.id)}
                     />
                   </div>
@@ -163,7 +185,7 @@ const JobList = () => {
                       <span className="font-bold">Rp</span>
                       <span>
                         {typeof job.salary === "number"
-                          ? job.salary.toLocaleString('id-ID')
+                          ? job.salary.toLocaleString("id-ID")
                           : job.salary}
                       </span>
                     </div>
@@ -183,7 +205,8 @@ const JobList = () => {
 
                   <div className="mt-3 flex items-center justify-between text-gray-500 text-xs">
                     <span className="flex items-center gap-1">
-                      <span className="text-gray-400">•</span> Posted {job.posted_at}
+                      <span className="text-gray-400">•</span> Posted{" "}
+                      {job.posted_at}
                     </span>
                     <button className="text-blue-600 border border-blue-500 px-3 py-1 rounded-full text-xs hover:bg-blue-500 hover:text-white transition">
                       Details
@@ -194,7 +217,9 @@ const JobList = () => {
             ) : (
               <div className="text-center text-gray-500 py-8">
                 <p className="text-lg font-medium">No jobs found</p>
-                <p className="text-sm">Try adjusting your filters or search terms</p>
+                <p className="text-sm">
+                  Try adjusting your filters or search terms
+                </p>
               </div>
             )}
           </div>
@@ -221,7 +246,10 @@ const JobList = () => {
         >
           &times;
         </button>
-        <JobDetails job={selectedJob} onClose={() => setIsMobileDetailsOpen(false)} />
+        <JobDetails
+          job={selectedJob}
+          onClose={() => setIsMobileDetailsOpen(false)}
+        />
       </ReactModal>
     </div>
   );

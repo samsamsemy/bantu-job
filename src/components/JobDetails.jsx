@@ -1,5 +1,9 @@
+import { useState } from "react";
+
 const JobDetails = ({ job }) => {
   if (!job) return null;
+
+  const [activeTab, setActiveTab] = useState("description");
 
   return (
     <div className="jobs-details w-full bg-white p-6 shadow-md rounded-lg">
@@ -29,50 +33,70 @@ const JobDetails = ({ job }) => {
           {job.location || "N/A"}
         </p>
         <p>
+          <span className="font-semibold">Experience:</span>{" "}
+          {job.experience || "N/A"}
+        </p>
+        <p>
           <span className="font-semibold">Salary:</span> {job.salary || "N/A"}
-        </p>
-        <p>
-          <span className="font-semibold">Category:</span>{" "}
-          {job.category || "N/A"}
-        </p>
-        <p>
-          <span className="font-semibold">Posted At:</span>{" "}
-          {job.posted_at || "N/A"}
         </p>
       </div>
 
-      {/* Deskripsi Pekerjaan */}
-      <div className="mt-6">
-        <div className="bg-gray-50 p-4 rounded-lg">
+      {/* Tab Menu */}
+      <div className="flex border-b mt-6">
+        <button
+          className={`flex-1 py-2 text-center font-semibold ${
+            activeTab === "description"
+              ? "border-b-4 border-blue-600 text-blue-600"
+              : "text-gray-600"
+          }`}
+          onClick={() => setActiveTab("description")}
+        >
+          DESCRIPTION
+        </button>
+        <button
+          className={`flex-1 py-2 text-center font-semibold ${
+            activeTab === "company"
+              ? "border-b-4 border-blue-600 text-blue-600"
+              : "text-gray-600"
+          }`}
+          onClick={() => setActiveTab("company")}
+        >
+          COMPANY
+        </button>
+      </div>
+
+      {/* Content Section */}
+      {activeTab === "description" ? (
+        <div className="mt-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-3">
             Description
           </h3>
           <p className="text-gray-600 leading-relaxed">
             {job.description || "No description available"}
           </p>
-        </div>
-      </div>
-
-      {/* Persyaratan Pekerjaan */}
-      {job.requirements && job.requirements.length > 0 && (
-        <div className="mt-6">
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-800 mb-3">
-              Requirements
-            </h3>
-            <div className="space-y-2">
-              {job.requirements.map((requirement, index) => (
-                <div key={index} className="flex items-start">
-                  <span className="text-blue-500 mr-2">•</span>
-                  <p className="text-gray-600">{requirement}</p>
-                </div>
-              ))}
+          {job.requirements && job.requirements.length > 0 && (
+            <div className="mt-4">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                Requirement
+              </h3>
+              <ul className="list-disc pl-5 text-gray-600">
+                {job.requirements.map((req, index) => (
+                  <li key={index}>{req}</li>
+                ))}
+              </ul>
             </div>
-          </div>
+          )}
+        </div>
+      ) : (
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">Company</h3>
+          <p className="text-gray-600 leading-relaxed">
+            {job.companyInfo || "No company information available"}
+          </p>
         </div>
       )}
 
-      {/* Tombol Apply */}
+      {/* Apply Button */}
       <button
         onClick={() => console.log("Apply clicked for job:", job.title)}
         className="mt-8 w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold"
