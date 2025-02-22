@@ -1,5 +1,3 @@
-import React from "react";
-
 const JobDetails = ({ job }) => {
   if (!job) return null;
 
