@@ -1,10 +1,13 @@
-import { MapPin, Heart, Menu } from "lucide-react";
 import React, { useState, useEffect } from "react";
+import ReactModal from "react-modal";
+import { MapPin, Heart, Menu } from "lucide-react";
 import useJobs from "../data/FetchJobs";
 import "../style/jobs-style.css";
 import SidebarFilter from "./SidebarFilter";
 import JobSearch from "../components/JobSearch";
 import JobDetails from "../components/JobDetails";
+
+ReactModal.setAppElement("#root");
 
 const extractSalaryNumber = (salary) => {
   if (typeof salary === 'number') return salary;
@@ -15,6 +18,7 @@ const JobList = () => {
   const { jobs, isLoading } = useJobs();
   const [selectedJob, setSelectedJob] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobileDetailsOpen, setIsMobileDetailsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [location, setLocation] = useState("");
   const [favorites, setFavorites] = useState([]);
@@ -36,6 +40,9 @@ const JobList = () => {
 
   const handleJobClick = (job) => {
     setSelectedJob(job);
+    if (window.innerWidth <= 768) {
+      setIsMobileDetailsOpen(true);
+    }
   };
 
   const handleSearch = (term, loc) => {
@@ -62,21 +69,16 @@ const JobList = () => {
     ? jobs.filter((job) => {
         const matchesTitle = job.title.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesLocation = job.location.toLowerCase().includes(location.toLowerCase());
-        
-        const jobSalary = extractSalaryNumber(job.salary) || 0; // Default ke 0 jika tidak ada nilai
+        const jobSalary = extractSalaryNumber(job.salary) || 0;
         const minSalary = extractSalaryNumber(filters.minSalary) || 0;
-        
         const matchesSalary = minSalary === 0 || jobSalary >= minSalary;
-
         const matchesExperience =
           !filters.experience ||
           job.experience?.toLowerCase().includes(filters.experience.toLowerCase());
-
         const jobTypeValue = job.jobType || job.job_type || job.type || job.employment_type;
         const matchesJobType =
           filters.jobType.length === 0 || 
           (jobTypeValue && filters.jobType.includes(jobTypeValue));
-
         const workTypeValue = job.workType || job.work_type || job.location_type;
         const matchesWorkType =
           filters.workType.length === 0 ||
@@ -204,6 +206,23 @@ const JobList = () => {
           </div>
         )}
       </div>
+
+      {/* Modal untuk tampilan mobile */}
+      <ReactModal
+        isOpen={isMobileDetailsOpen}
+        onRequestClose={() => setIsMobileDetailsOpen(false)}
+        contentLabel="Job Details"
+        className="modal"
+        overlayClassName="overlay"
+      >
+        <button
+          onClick={() => setIsMobileDetailsOpen(false)}
+          className="close-button"
+        >
+          &times;
+        </button>
+        <JobDetails job={selectedJob} onClose={() => setIsMobileDetailsOpen(false)} />
+      </ReactModal>
     </div>
   );
 };
