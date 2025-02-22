@@ -1,6 +1,6 @@
 const HomeHero = () => {
   return (
-    <div className="w-full min-h-screen flex items-center justify-center max-w-[1300px] mx-auto px-6 md:px-12">
+    <div className="w-full min-h-screen flex items-center justify-center max-w-[1200px] mx-auto px-6 md:px-12">
       <div className="relative w-full flex flex-col md:flex-row items-center">
         {/* Teks di kiri */}
         <div className="text-center md:text-left md:w-1/2">

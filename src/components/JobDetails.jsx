@@ -17,30 +17,39 @@ const JobDetails = ({ job }) => {
       {/* Informasi Utama */}
       <div className="border-b pb-4 mt-4 grid grid-cols-2 gap-4 text-sm text-gray-700">
         <p>
-          <span className="font-semibold">Job Type:</span> {job.jobType || "N/A"}
+          <span className="font-semibold">Job Type:</span>{" "}
+          {job.jobType || "N/A"}
         </p>
         <p>
-          <span className="font-semibold">Work Type:</span> {job.workType || "N/A"}
+          <span className="font-semibold">Work Type:</span>{" "}
+          {job.workType || "N/A"}
         </p>
         <p>
-          <span className="font-semibold">Location:</span> {job.location || "N/A"}
+          <span className="font-semibold">Location:</span>{" "}
+          {job.location || "N/A"}
         </p>
         <p>
           <span className="font-semibold">Salary:</span> {job.salary || "N/A"}
         </p>
         <p>
-          <span className="font-semibold">Category:</span> {job.category || "N/A"}
+          <span className="font-semibold">Category:</span>{" "}
+          {job.category || "N/A"}
         </p>
         <p>
-          <span className="font-semibold">Posted At:</span> {job.posted_at || "N/A"}
+          <span className="font-semibold">Posted At:</span>{" "}
+          {job.posted_at || "N/A"}
         </p>
       </div>
 
       {/* Deskripsi Pekerjaan */}
       <div className="mt-6">
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">Description</h3>
-          <p className="text-gray-600 leading-relaxed">{job.description || "No description available"}</p>
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">
+            Description
+          </h3>
+          <p className="text-gray-600 leading-relaxed">
+            {job.description || "No description available"}
+          </p>
         </div>
       </div>
 
@@ -48,7 +57,9 @@ const JobDetails = ({ job }) => {
       {job.requirements && job.requirements.length > 0 && (
         <div className="mt-6">
           <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-800 mb-3">Requirements</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-3">
+              Requirements
+            </h3>
             <div className="space-y-2">
               {job.requirements.map((requirement, index) => (
                 <div key={index} className="flex items-start">
