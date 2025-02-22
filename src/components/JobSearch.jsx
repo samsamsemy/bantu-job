@@ -9,7 +9,7 @@ const JobSearch = ({ onSearch }) => {
   };
 
   return (
-    <div className="home-jobsearch bg-gray-100 py-4">
+    <div className="home-jobsearch bg-gray-100 py-4 my-10 mb-3">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-semibold text-gray-900 text-center">
           Find your dream job
