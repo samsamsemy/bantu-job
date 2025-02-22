@@ -1,123 +1,200 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const SidebarFilter = ({ onFilterChange }) => {
+const SidebarFilter = ({ isOpen, toggleSidebar, onFilterChange, initialFilters }) => {
   const [filters, setFilters] = useState({
-    showBy: "newJobs",
-    minSalary: "",
-    jobType: [],
-    experience: "",
-    workType: []
+    showBy: initialFilters.showBy || "newJobs",
+    minSalary: initialFilters.minSalary || "",
+    jobType: initialFilters.jobType || [],
+    experience: initialFilters.experience || "",
+    workType: initialFilters.workType || [],
   });
+
+  useEffect(() => {
+    console.log('Current filters in SidebarFilter:', filters);
+    onFilterChange(filters);
+  }, [filters, onFilterChange]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    if (type === "checkbox") {
-      setFilters((prev) => ({
-        ...prev,
-        [name]: checked
+    
+    setFilters((prev) => {
+      if (type === "checkbox") {
+        const updatedArray = checked
           ? [...prev[name], value]
-          : prev[name].filter((v) => v !== value)
-      }));
-    } else {
-      setFilters((prev) => ({ ...prev, [name]: value }));
-    }
-    onFilterChange(filters);
+          : prev[name].filter((v) => v !== value);
+        
+        return {
+          ...prev,
+          [name]: updatedArray,
+        };
+      }
+  
+      if (name === "minSalary") {
+        return {
+          ...prev,
+          [name]: value === "" ? "" : Number(value),
+        };
+      }
+  
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+  
+  
+  const handleShowByChange = (value) => {
+    setFilters((prev) => ({
+      ...prev,
+      showBy: value,
+    }));
+  };
+
+  const clearFilters = () => {
+    const clearedFilters = {
+      showBy: "newJobs",
+      minSalary: "",
+      jobType: [],
+      experience: "",
+      workType: [],
+    };
+    setFilters(clearedFilters);
+    onFilterChange(clearedFilters);
   };
 
   return (
-    <div className="w-fit md:w-1/4 h-fit bg-white p-4 shadow-md rounded-md">
-      <h2 className="text-lg font-semibold mb-3">Find your dream job</h2>
+    <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={toggleSidebar}
+        />
+      )}
 
-      {/* Show By */}
-      <div className="mb-4">
-        <label className="block font-bold mb-2">Show By</label>
-        <div className="flex gap-2">
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg p-4 transform transition-transform z-50
+          ${isOpen ? "translate-x-0" : "-translate-x-full"} md:static md:translate-x-0 md:w-1/4 rounded-md overflow-y-auto max-h-screen`}
+      >
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold">Filters</h2>
           <button
-            className={`px-3 py-1 rounded-full border ${
-              filters.showBy === "newJobs" ? "bg-blue-500 text-white" : "bg-gray-200"
-            }`}
-            onClick={() => handleChange({ target: { name: "showBy", value: "newJobs" } })}
+            className="md:hidden text-gray-600 hover:text-gray-800"
+            onClick={toggleSidebar}
           >
-            New Jobs
+            ✖
           </button>
+        </div>
+
+        <div className="mb-6">
+          <label className="block font-medium text-gray-700 mb-2">Show By</label>
+          <div className="flex gap-2">
+            {[
+              { id: "newJobs", label: "New Jobs" },
+              { id: "mostSuitable", label: "Most Suitable" },
+            ].map((option) => (
+              <button
+                key={option.id}
+                className={`px-3 py-1 rounded-full text-sm border transition-colors
+                  ${
+                    filters.showBy === option.id
+                      ? "bg-blue-500 text-white border-blue-500"
+                      : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
+                  }`}
+                onClick={() => handleShowByChange(option.id)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* <div className="mb-6">
+          <label className="block font-medium text-gray-700 mb-2">
+            Minimum Salary
+          </label>
+          <input
+            type="number"
+            name="minSalary"
+            value={filters.minSalary}
+            onChange={handleChange}
+            placeholder="Enter minimum salary"
+            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div> */}
+
+        <div className="mb-6">
+          <label className="block font-medium text-gray-700 mb-2">Job Type</label>
+          {["Full-time", "Part-time", "Freelance", "Internship", "Contract"].map(
+            (type) => (
+              <div key={type} className="flex items-center mb-2">
+                <input
+                  type="checkbox"
+                  id={`jobType-${type}`}
+                  name="jobType"
+                  value={type}
+                  checked={filters.jobType.includes(type)}
+                  onChange={handleChange}
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <label
+                  htmlFor={`jobType-${type}`}
+                  className="ml-2 text-gray-700"
+                >
+                  {type}
+                </label>
+              </div>
+            )
+          )}
+        </div>
+{/* 
+        <div className="mb-6">
+          <label className="block font-medium text-gray-700 mb-2">
+            Experience Level
+          </label>
+          <input
+            type="text"
+            name="experience"
+            value={filters.experience}
+            onChange={handleChange}
+            placeholder="e.g., Entry Level, Senior"
+            className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div> */}
+
+        <div className="mb-6">
+          <label className="block font-medium text-gray-700 mb-2">Work Type</label>
+          {["On-site", "Hybrid", "Remote"].map((type) => (
+            <div key={type} className="flex items-center mb-2">
+              <input
+                type="checkbox"
+                id={`workType-${type}`}
+                name="workType"
+                value={type}
+                checked={filters.workType.includes(type)}
+                onChange={handleChange}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <label
+                htmlFor={`workType-${type}`}
+                className="ml-2 text-gray-700"
+              >
+                {type}
+              </label>
+            </div>
+          ))}
+        </div>
+
+        <div className="space-y-3">
           <button
-            className={`px-3 py-1 rounded-full border ${
-              filters.showBy === "mostSuitable" ? "bg-blue-500 text-white" : "bg-gray-200"
-            }`}
-            onClick={() => handleChange({ target: { name: "showBy", value: "mostSuitable" } })}
+            className="w-full bg-gray-100 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-200 transition-colors"
+            onClick={clearFilters}
           >
-            Most Suitable
+            Clear All
           </button>
         </div>
       </div>
-
-      {/* Salary */}
-      <div className="mb-4">
-        <label className="block font-bold mb-2">Salary</label>
-        <input
-          type="number"
-          name="minSalary"
-          value={filters.minSalary}
-          onChange={handleChange}
-          placeholder="Min salary"
-          className="w-full border p-2 rounded"
-        />
-      </div>
-
-      {/* Job Type */}
-      <div className="mb-4">
-        <label className="block font-bold mb-2">Job Type</label>
-        {["Full-time", "Freelance", "Internship", "Volunteer", "Contract"].map((type) => (
-          <div key={type} className="flex items-center mb-2">
-            <input
-              type="checkbox"
-              name="jobType"
-              value={type}
-              checked={filters.jobType.includes(type)}
-              onChange={handleChange}
-            />
-            <label className="ml-2">{type}</label>
-          </div>
-        ))}
-      </div>
-
-      {/* Experience */}
-      <div className="mb-4">
-        <label className="block font-bold mb-2">Experience</label>
-        <input
-          type="text"
-          name="experience"
-          value={filters.experience}
-          onChange={handleChange}
-          placeholder="Enter experience level"
-          className="w-full border p-2 rounded"
-        />
-      </div>
-
-      {/* Work Type */}
-      <div className="mb-4">
-        <label className="block font-bold mb-2">Work Type</label>
-        {["On-site", "Hybrid", "Remote"].map((type) => (
-          <div key={type} className="flex items-center mb-2">
-            <input
-              type="checkbox"
-              name="workType"
-              value={type}
-              checked={filters.workType.includes(type)}
-              onChange={handleChange}
-            />
-            <label className="ml-2">{type}</label>
-          </div>
-        ))}
-      </div>
-
-      <button
-        className="bg-blue-500 text-white py-2 px-4 rounded w-full mt-4"
-        onClick={() => onFilterChange(filters)}
-      >
-        Search Result
-      </button>
-    </div>
+    </>
   );
 };
 
