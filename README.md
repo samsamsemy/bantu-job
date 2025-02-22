@@ -32,6 +32,7 @@ Parameter
 
 Responses
 Struktur Data Jobs
+<br>
 ![image](https://github.com/user-attachments/assets/679ec3ce-86cb-47c1-a24c-16f0b7909ff3)
 
 
@@ -39,13 +40,15 @@ Struktur Data Jobs
 1. Mendapatkan Semua Pekerjaan
    
 Request:
+<br>
 ![image](https://github.com/user-attachments/assets/0582b396-6213-4d1a-a43e-2993fcd88edd)
 
 Response:
+<br>
 ![image](https://github.com/user-attachments/assets/1a41ac42-e0c7-4081-a93e-df113f9f9183)
 
 2. Mendapatkan Pekerjaan Berdasarkan ID
-
+<br>
 Copy
 GET /jobs/1
 <br>
